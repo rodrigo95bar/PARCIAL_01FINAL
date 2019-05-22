@@ -86,6 +86,7 @@ int main()
                     case 2:
                      musico_listarNuevo(pMusico,CANT_MUSICO);
 
+                    break;
                     case 3:
                     orquesta_listarLugar(pOrquesta,CANT_ORQUESTA);
 
