@@ -504,10 +504,10 @@ int temp;
 
 void promedioTotalMusicoOrquesta(Musico *pMusico,Orquesta *pOrquesta,int sizeM,int sizeO)
 {
-  int contadorMusico=0;
-  int contadorOrquesta=0;
+  float contadorMusico=0;
+  float contadorOrquesta=0;
   int i,j;
-  int promedio;
+  float promedio;
    for(i=0;i < sizeM;i++)
    {
        if(pMusico[i].isEmpty==0)
@@ -526,8 +526,8 @@ void promedioTotalMusicoOrquesta(Musico *pMusico,Orquesta *pOrquesta,int sizeM,i
             continue;
     }
     promedio = contadorMusico / contadorOrquesta;
-
-    printf("\nEl promedio de musicos por Orquesta es de: %d\n",promedio);
+    printf("\nMusicos : %.2f, Orquestas : %.2f\n",contadorMusico,contadorOrquesta);
+    printf("\nEl promedio de musicos por Orquesta es de: %.2f\n",promedio);
 
 }
 
@@ -1133,7 +1133,7 @@ void crearMusicos(Musico *pMusico)
              pMusico[1].isEmpty=0;
             pMusico[1].idMusico=2;
             pMusico[1].edad=20;
-            pMusico[1].suOrquesta=2;
+            pMusico[1].suOrquesta=1;
             pMusico[1].suInstrumento=4;
             strcpy(pMusico[1].nombre,"Mus2");
             strcpy(pMusico[1].apellido,"Amus2");
@@ -1141,7 +1141,7 @@ void crearMusicos(Musico *pMusico)
              pMusico[2].isEmpty=0;
             pMusico[2].idMusico=3;
             pMusico[2].edad=25;
-            pMusico[2].suOrquesta=4;
+            pMusico[2].suOrquesta=1;
             pMusico[2].suInstrumento=2;
             strcpy(pMusico[2].nombre,"Mus3");
             strcpy(pMusico[2].apellido,"Amus3");
@@ -1150,7 +1150,7 @@ void crearMusicos(Musico *pMusico)
              pMusico[3].isEmpty=0;
             pMusico[3].idMusico=4;
             pMusico[3].edad=27;
-            pMusico[3].suOrquesta=4;
+            pMusico[3].suOrquesta=1;
             pMusico[3].suInstrumento=1;
             strcpy(pMusico[3].nombre,"Mus4");
             strcpy(pMusico[3].apellido,"Amus4");
@@ -1191,19 +1191,19 @@ void crearOrquesta(Orquesta *pOrquesta)
             pOrquesta[1].idOrquesta=2;
             pOrquesta[1].tipoOrquesta=2;
             strcpy(pOrquesta[1].nombre,"nombre2");
-            strcpy(pOrquesta[1].lugar,"lugar2");
+            strcpy(pOrquesta[1].lugar,"lugar1");
 
-            pOrquesta[1].isEmpty=0;
-            pOrquesta[1].idOrquesta=3;
-            pOrquesta[1].tipoOrquesta=3;
-            strcpy(pOrquesta[1].nombre,"nombre3");
-            strcpy(pOrquesta[1].lugar,"nombre3");
+            pOrquesta[2].isEmpty=0;
+            pOrquesta[2].idOrquesta=3;
+            pOrquesta[2].tipoOrquesta=3;
+            strcpy(pOrquesta[2].nombre,"nombre3");
+            strcpy(pOrquesta[2].lugar,"lugar2");
 
-            pOrquesta[1].isEmpty=0;
-            pOrquesta[1].idOrquesta=4;
-            pOrquesta[1].tipoOrquesta=3;
-            strcpy(pOrquesta[1].nombre,"nombre4");
-            strcpy(pOrquesta[1].lugar,"lugar4");
+            pOrquesta[3].isEmpty=0;
+            pOrquesta[3].idOrquesta=4;
+            pOrquesta[3].tipoOrquesta=3;
+            strcpy(pOrquesta[3].nombre,"nombre4");
+            strcpy(pOrquesta[3].lugar,"lugar3");
 }
 
 void crearInstrumentos(Instrumento *pInstrumento)
@@ -1588,6 +1588,7 @@ int orquesta_listarLugar(Orquesta *pOrquesta, int CANT_ORQUESTA)
     char lugarBuscado[10];
     printf("\nIngrese el lugar de la Orquesta a buscar\n");
     fgets(lugarBuscado,10,stdin);
+    lugarBuscado[strlen(lugarBuscado)-1]='\0';
 
 
     if(pOrquesta!=NULL && CANT_ORQUESTA>=0)
@@ -1704,23 +1705,29 @@ int orquesta_listarPorCantidad(Orquesta *pOrquesta, Musico *pMusico,int CANT_ORQ
 
     int contadorMusico=0;
 
-    for(j=0;j<CANT_MUSICO;i++) //agregar corchete abajo
+    for(j=0;j<CANT_MUSICO;j++) //agregar corchete abajo
     {
+        for(i=0;i<CANT_ORQUESTA;i++)
+        {
+
+      if(pOrquesta[i].isEmpty==1)
+                       continue;
       if(pMusico[j].suOrquesta==pOrquesta[i].idOrquesta)
       contadorMusico++;
+
       else
         continue;
      }
-
+     }
     if(pOrquesta!=NULL && CANT_ORQUESTA>=0)
     {
         for(i=0;i<CANT_ORQUESTA;i++)
         {
             if(pOrquesta[i].isEmpty==1)
-                continue;
+                         continue;
             if(contadorMusico>=5)
-                printf("\n ID: %d\n tipoOrquesta: %d\n nombre: %s\n lugar: %s",
-                       pOrquesta[i].idOrquesta,pOrquesta[i].tipoOrquesta,pOrquesta[i].nombre,pOrquesta[i].lugar);
+                printf("\n ID: %d\n tipoOrquesta: %d\n nombre: %s\n lugar: %s\n cantidad de musicos : %d\n",
+                       pOrquesta[i].idOrquesta,pOrquesta[i].tipoOrquesta,pOrquesta[i].nombre,pOrquesta[i].lugar,contadorMusico);
 
                        else
                          continue;
