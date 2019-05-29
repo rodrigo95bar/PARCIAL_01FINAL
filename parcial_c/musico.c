@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "utn.h"
 #include "musico.h"
+#include "instrumento.h"
 #define sinfonica 1
 #define filarmonica 2
 #define camara 3
@@ -241,9 +242,9 @@ int musico_alta(Musico* pMusico, Orquesta* pOrquesta, Instrumento* pInstrumento,
             pMusico[posicion].suInstrumento= bufferInstrumento;
             utn_getUnsignedInt("\nQue orquesta seleccionas?\n 1)Sinfonica 2)Filarmonica 3)Camara","Error, fuera de rango",1,sizeof(int),1,3,1,&bufferOrquesta);
             pMusico[posicion].suOrquesta= bufferOrquesta;
-
-            printf("\n ID: %d\n \n nombre: %s\n apellido: %s \n Su orquesta es: %d \n Su Instrumento es: %d",
-                   pMusico[posicion].idMusico,pMusico[posicion].nombre,pMusico[posicion].apellido,pMusico[posicion].suOrquesta,pMusico[posicion].suInstrumento);
+            pInstrumento[posicion].idInstrumento=pMusico[posicion].idMusico;
+            printf("\n ID: %d\n \n nombre: %s\n apellido: %s \n Su orquesta es: %d \n Su Instrumento es: %s \n Su tipo de Instrumento es: %d \n ",
+                   pMusico[posicion].idMusico,pMusico[posicion].nombre,pMusico[posicion].apellido,pMusico[posicion].suOrquesta,pInstrumento[posicion].nombreInstrumento,pMusico[posicion].suInstrumento);
             retorno=0;
         }
     }
@@ -348,7 +349,7 @@ int musico_bajaValorRepetidoInt(Musico *pMusico, int sizeArray, int valorBuscado
 * \return int Return (-1) si Error [largo no valido o puntero NULL o no encuentra elementos con el valor buscado] - (0) si se modifica el elemento exitosamente
 *
 */
-int musico_modificar(Musico *pMusico,Orquesta *pOrquesta, int sizeArray)
+int musico_modificar(Musico *pMusico,Orquesta *pOrquesta,Instrumento *pInstrumento, int sizeArray)
 {
     int retorno=-1;
     int posicion;
@@ -356,7 +357,7 @@ int musico_modificar(Musico *pMusico,Orquesta *pOrquesta, int sizeArray)
     char opcion;
     if(pMusico!=NULL && sizeArray>0)
     {
-        musico_listar(pMusico,sizeArray);
+        musico_listar(pMusico,pInstrumento,sizeArray);
         utn_getUnsignedInt("\nID a modificar: ","\nError",1,sizeof(int),1,sizeArray,1,&id);
         if(musico_buscarID(pMusico,sizeArray,id,&posicion)==-1)
         {
@@ -445,7 +446,7 @@ int musico_ordenarPorString(Musico *pMusico,int size)
 * \return  (-1) si Error [largo no valido o puntero NULL] - (0) si se lista exitosamente
 *
 */
-int musico_listar(Musico *pMusico, int CANT_MUSICO)
+int musico_listar(Musico *pMusico,Instrumento *pInstrumento, int CANT_MUSICO)
 {
     int retorno=-1;
     int i;
@@ -456,8 +457,8 @@ int musico_listar(Musico *pMusico, int CANT_MUSICO)
             if(pMusico[i].isEmpty==1)
                 continue;
             else
-                printf("\n ID: %d\n suInstrumento: %d\n nombre: %s\n apellido: %s\n ",
-                       pMusico[i].idMusico,pMusico[i].suInstrumento,pMusico[i].nombre,pMusico[i].apellido);
+                printf("\n El nombre del musico es : %s \n El apellido del musico es : %s \n Su ID es : %d \n Su edad es : %d \n Su instrumento es : %s \n Su tipo de instrumento es %d  \n Su orquesta es : %d \n",
+                       pMusico[i].nombre,pMusico[i].apellido,pMusico[i].idMusico,pMusico[i].edad,pInstrumento[i].nombreInstrumento,pMusico[i].suInstrumento,pMusico[i].suOrquesta);
         }
         retorno=0;
     }

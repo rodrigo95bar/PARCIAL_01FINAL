@@ -182,3 +182,71 @@
 	"orquesta.h"
 	"instrumento.h"
 
+1558569590 source:c:\users\brankita\desktop\buee\parcial_01final-master\parcial_c\instrumento.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	"utn.h"
+	"instrumento.h"
+
+1558569590 c:\users\brankita\desktop\buee\parcial_01final-master\parcial_c\utn.h
+
+1558569590 c:\users\brankita\desktop\buee\parcial_01final-master\parcial_c\instrumento.h
+
+1559146772 source:c:\users\brankita\desktop\buee\parcial_01final-master\parcial_c\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"utn.h"
+	"orquesta.h"
+	"musico.h"
+	"instrumento.h"
+	"informes.h"
+
+1559146561 c:\users\brankita\desktop\buee\parcial_01final-master\parcial_c\orquesta.h
+	"instrumento.h"
+
+1559141225 c:\users\brankita\desktop\buee\parcial_01final-master\parcial_c\musico.h
+	"orquesta.h"
+	"instrumento.h"
+
+1559146561 c:\users\brankita\desktop\buee\parcial_01final-master\parcial_c\informes.h
+	"orquesta.h"
+	"musico.h"
+	"instrumento.h"
+
+1559141545 source:c:\users\brankita\desktop\buee\parcial_01final-master\parcial_c\musico.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	"utn.h"
+	"musico.h"
+	"instrumento.h"
+
+1559106315 source:c:\users\brankita\desktop\buee\parcial_01final-master\parcial_c\orquesta.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	"utn.h"
+	"musico.h"
+	"orquesta.h"
+	"instrumento.h"
+
+1558569590 source:c:\users\brankita\desktop\buee\parcial_01final-master\parcial_c\utn.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	"utn.h"
+	"fantasma.h"
+
+1558569590 c:\users\brankita\desktop\buee\parcial_01final-master\parcial_c\fantasma.h
+
+1559147578 source:c:\users\brankita\desktop\buee\parcial_01final-master\parcial_c\informes.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	"utn.h"
+	"orquesta.h"
+	"musico.h"
+	"instrumento.h"
+

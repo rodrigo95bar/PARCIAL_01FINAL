@@ -7,243 +7,6 @@
 #include "instrumento.h"
 #define COL 25
 
-//cambiar por nombre entidad
-/*
-** \brief Busca un valor y lista los elementos de dos arrays vinculados
-* \param arrayA Fantasma Array de Fantasma
-* \param arrayB Fantasma Array de Fantasma
-* \param sizeI int Tamaño del arrayA
-* \param sizeJ int Tamaño del arrayB
-* \param criterio char* Puntero al valor que debe contener el elemento del array para que se liste
-* \return int Return (-1) si Error [Invalid length or NULL pointer] - (0) Ok
-*
-*
-int Informes_listarPorCriterio(Fantasma arrayA[], Fantasma arrayB[], int sizeI, int sizeJ, char* criterio)  //Valores de dos arrays. Si es valor repetido se vuelve a imprimir
-{
-    int retorno=-1;
-    int i;
-    int j;
-    if(arrayA!=NULL && sizeI>=0 && arrayB!=NULL && sizeJ>=0 && criterio!=NULL)
-    {
-        for(i=0;i<sizeI;i++)                                                                            //Obtengo la posicion de la primer entidad
-        {
-            if(arrayA[i].isEmpty==1)                 //cambiar campo donde busco el criterio
-                continue;                                                                       //si esta vacio o no tiene el criterio > continue
-            if(strcmp(arrayA[i].varString,criterio)==0)
-            {
-                fantasma_buscarID(arrayB,sizeJ,arrayA[i].idUnico,&j);                            //Obtengo la posicion de la 2da entidad buscando por el campo en comun
-                printf("\nID A: %d\nID B: %d",
-                       arrayA[i].idUnico,arrayB[j].idUnico);
-            }
-
-        }
-        retorno=0;
-    }
-    return retorno;
-}
-
-** \brief Busca un valor repetido y lo lista una sola vez, junto con otros elementos de dos arrays vinculados
-* \param arrayA Fantasma Array de Fantasma
-* \param arrayB Fantasma Array de Fantasma
-* \param sizeI int Tamaño del arrayA
-* \param sizeJ int Tamaño del arrayB
-* \return int Return (-1) si Error [Invalid length or NULL pointer] - (0) Ok
-*
-*
-//Lista un campo que se repite, lo imprime una sola vez y calcula contador y acumulado
-int Informes_listarCriterioContadorAcumulado(Fantasma arrayA[], Fantasma arrayB[], int sizeI, int sizeJ)         //cambiar Fantasma
-{
-    int retorno=-1;
-    int i;
-    int j;
-    int k;
-    int auxPosicion;
-    int contador=0;
-    int acumulado=0;
-
-    if(arrayA!=NULL && sizeI>=0 && arrayB!=NULL && sizeJ>=0)
-    {
-        for(i=0;i<sizeI;i++)
-        {
-            fantasma_buscarString(arrayA,i,arrayA[i].varString,&auxPosicion);                  //cambiar nombreFuncion y campo      va a analizar hasta <i
-            if(arrayA[i].isEmpty==1 && auxPosicion!=-1)
-                continue;                                                                 //Si ese valor ya aparecio > continue
-            else
-            {
-                printf("\nCampo: %s",arrayA[i].varString);                                   //Imprimo el valor que voy a listar
-                for(k=i,contador=0,acumulado=0;k<sizeI;k++)                                                            //Recorro por segunda vez el mismo array
-                {
-                    if(arrayA[k].isEmpty!=1 && strcmp(arrayA[k].varString,arrayA[i].varString)==0)     //Busco todas las veces que aparece ese cuit
-                    {
-                        fantasma_buscarID(arrayB,sizeJ,arrayA[k].idUnico,&j);                 //cambiar Fantasma, busco por el campo en comun
-
-                        contador++;
-                        acumulado+=(arrayA[k].varInt*arrayB[j].varInt);
-
-                        printf("\nID A: %d\nID B: %d",
-                                arrayA[k].idUnico,arrayB[j].idUnico);
-                    }
-                }
-                printf("\nCantidad: %d \nAcumulado: %d",contador,acumulado);
-                //contador=0;
-                //acumulado=0;
-            }
-        }
-        retorno=0;
-    }
-    return retorno;
-}
-
-** \brief Busca un maximo de ocurrencia y acumulado
-* \param arrayA Fantasma Array de Fantasma
-* \param arrayB Fantasma Array de Fantasma
-* \param sizeI int Tamaño del arrayA
-* \param sizeJ int Tamaño del arrayB
-* \return int Return (-1) si Error [Invalid length or NULL pointer] - (0) Ok
-*
-*
-int Informes_maxContadorAcumulado(Fantasma arrayA[], Fantasma arrayB[], int sizeI, int sizeJ)
-{
-    int retorno=-1;
-    int i;
-    int j;
-    int k;
-    int auxPosicion;
-    int maxAcumulado=0;
-    int maxContador=0;
-    int acumulador=0;
-    int contador=0;
-    int iMaxAcumulado [sizeI];
-    int iMaxContador [sizeI];
-
-    if(arrayA!=NULL && sizeI>=0 && arrayB!=NULL && sizeJ>=0)
-    {
-        for(i=0;i<sizeI;i++)
-        {
-            fantasma_buscarString(arrayA,i,arrayA[i].varString,&auxPosicion);                  //cambiar nombreFuncion y campo
-            if(arrayA[i].isEmpty==1 && auxPosicion!=-1)
-                continue;                                                                 //Si ese valor ya aparecio > continue
-            else
-            {
-                printf("\nCampo: %s",arrayA[i].varString);                                   //Imprimo el valor que voy a listar
-                for(k=i;k<sizeI;k++)                                                            //Recorro por segunda vez el mismo array
-                {
-                    if(arrayA[k].isEmpty!=1 && strcmp(arrayA[k].varString,arrayA[i].varString)==0)     //Busco todas las veces que aparece ese cuit
-                    {
-
-                        fantasma_buscarID(arrayB,sizeJ,arrayA[k].idUnico,&j);                 //cambiar Fantasma, busco por el campo en comun
-
-                        contador++;                                                         //calculos acumulados y contador
-                        acumulador+=(arrayA[k].varInt*arrayB[j].varInt);
-
-                        printf("\nID A: %d\nID B: %d",                                         //imprimo datos que haya que mostrar
-                                arrayA[k].idUnico,arrayB[j].idUnico);
-                    }
-                }
-                //Guardo los max acumulado y contador
-                if(acumulador>maxAcumulado)
-                {
-                    maxAcumulado=acumulador;
-                    iMaxAcumulado[i-1]=-1;                       //Si mas de un cuit tiene la mayor facturacion
-                    iMaxAcumulado[i]=i;
-                }
-                else if(acumulador==maxAcumulado)
-                    iMaxAcumulado[i]=i;
-                else
-                    iMaxAcumulado[i]=-2;                         //Para marcar los lugares vacios
-
-                acumulador=0;
-
-                if(contador>maxContador)
-                {
-                    maxContador=contador;
-                    iMaxContador[i-1]=-1;                       //Si mas de un cuit tiene la mayor facturacion
-                    iMaxContador[i]=i;
-                }
-                else if(contador==maxContador)
-                    iMaxContador[i]=i;
-                else
-                    iMaxContador[i]=-2;                         //Para marcar los lugares vacios
-
-                contador=0;
-            }
-        }
-
-        printf("\nMayor acumulado: %d \nMayor contador: %d \nI: ",maxAcumulado,maxContador);
-        for(;iMaxAcumulado[i]!=-1;i--)                                                      //Uno o el otro, sino agregar otro contador que no sea el i
-        {
-            if(iMaxAcumulado[i]!=-2)                         //Salteo los vacios
-            {
-                printf("\n          CUIT: %s",arrayA[iMaxAcumulado[i]].varString);
-            }
-        }
-        for(;iMaxContador[i]!=-1;i--)
-        {
-            if(iMaxContador[i]!=-2)                         //Salteo los vacios
-            {
-                printf("\n          CUIT: %s",arrayA[iMaxContador[i]].varString);
-            }
-        }
-
-        retorno=0;
-    }
-    return retorno;
-}
-
-** \brief Crea una entidad auxiliar para ordenar e informar XXXXX
-* \param arrayA Fantasma Array de Fantasma
-* \param arrayB Fantasma Array de Fantasma
-* \param sizeI int Tamaño del arrayA
-* \param sizeJ int Tamaño del arrayB
-* \return int Return (-1) si Error [Invalid length or NULL pointer] - (0) Ok
-*
-*
-int Informes_listarAuxiliarOrdenar(Fantasma arrayA[], Fantasma arrayB[], int sizeI, int sizeJ)         //cambiar Fantasma
-{
-    int retorno=-1;
-    int i;
-    int j;
-    int k;
-    int auxPosicion;
-    int contador=0;
-    int acumulado=0;
-
-    Fantasma arrayAux[sizeI];                                                           //cambiar Fantasma y size si corresponde
-
-    if(arrayA!=NULL && sizeI>=0 && arrayB!=NULL && sizeJ>=0)
-    {
-        for(i=0;i<sizeI;i++)
-        {
-            fantasma_buscarString(arrayA,i,arrayA[i].varString,&auxPosicion);                  //cambiar nombreFuncion y campo      va a analizar hasta <i
-            if(arrayA[i].isEmpty==1 && auxPosicion!=-1)
-                continue;                                                                 //Si ese valor ya aparecio > continue
-            else
-            {
-                strcpy(arrayAux[i].varString,arrayA[i].varString);                              //cambio varstring
-                for(k=i;k<sizeI;k++)                                                            //Recorro por segunda vez el mismo array
-                {
-                    if(arrayA[k].isEmpty!=1 && strcmp(arrayA[k].varString,arrayA[i].varString)==0)     //Busco todas las veces que aparece ese cuit
-                    {
-                        fantasma_buscarID(arrayB,sizeJ,arrayA[k].idUnico,&j);                 //cambiar Fantasma, busco por el campo en comun
-
-                        contador++;
-                        acumulado+=(arrayA[k].varInt*arrayB[j].varInt);
-
-                    }
-                }
-                arrayAux[i].varInt=contador;                                    //completo el resto de los campos
-                arrayAux[i].varInt=acumulado;
-                arrayAux[i].isEmpty=0;
-
-                contador=0;
-                acumulado=0;
-            }
-        }
-        retorno=0;
-    }
-    return retorno;
-}
-*/
 
 /** \brief Bienvenida del abm.
  *
@@ -267,136 +30,14 @@ printf("\n\t Indique una opcion del menu (Numeros entre 1 y 10)\t\n");
 *
 *
 */
-int Informes_listarPorCriterio(Musico *pMusico, Instrumento *pInstrumento, int sizeI, int sizeJ, char* criterio)  //Valores de dos arrays. Si es valor repetido se vuelve a imprimir
-{
-    int retorno=-1;
-    int i;
-    int j;
-    if(pMusico!=NULL && sizeI>=0 && pInstrumento!=NULL && sizeJ>=0 && criterio!=NULL)
-    {
-        for(i=0;i<sizeI;i++)                                                                            //Obtengo la posicion de la primer entidad
-        {
-            if(pMusico[i].isEmpty==1)                 //cambiar campo donde busco el criterio
-                continue;                                                                       //si esta vacio o no tiene el criterio > continue
-            if(strcmp(pMusico[i].nombre,criterio)==0)
-            {
-                instrumento_buscarIDnuevo(pInstrumento,sizeJ,pMusico[i].nombre,&j);                            //Obtengo la posicion de la 2da entidad buscando por el campo en comun
-                printf("\nID A: %s\nID B: %s",
-                       pMusico[i].nombre,pInstrumento[j].nombreInstrumento);
-            }
 
-        }
-        retorno=0;
-    }
-    return retorno;
-}
-
-/*
-void nombreMasLargo(int size)
-{
-int i,j,x,lmax=0,imax;
-char mat[size][COL],aux[COL];
-for(i=0;i<size;i++)
-{
-printf("Ingrese nombre: ");
-gets(mat[i]);
-}
-// Ordeno alfabeticamente la matriz
-for(i=0;i<size-1;i++)
-{
-for(j=i+1;j<size;j++)
-{
-if((strcmp(mat[i],mat[j]))>0)
-{
-strcpy(aux,mat[i]);
-strcpy(mat[i],mat[j]);
-strcpy(mat[j],aux);
-}
-}
-}
-// Busqueda del nombre mas largo
-for(i=0;i<size;i++)
-{
-x=strlen(mat[i]);
-if(x>lmax)
-{
-lmax=x;
-imax=i;
-}
-}
-printf("El nombre mas largo es %s",mat[imax]);
-}
-*/
-
-
-
-/*int ordenar_numeros(Musico *pMusico, int size)
-{
-int Aux;
-
-         for(int i=0;i<size;i++)
-                for(int j=0;j<size-1;j++){
-                    if(pMusico[j].idMusico<pMusico[j+1].idMusico){
-                                                                        // cambia "<" a ">" para cambiar la manera de ordenar
-                        Aux=pMusico[j].idMusico;
-                        pMusico[j].idMusico=pMusico[j+1].idMusico;
-                        pMusico[j+1].idMusico=Aux; }
-
-           for(int i=0;i<size;i++)
-                if(pMusico[i].isEmpty==0 && pMusico[i].idMusico!=0 && pMusico!=NULL )
-                     printf("\nID : %d\n",pMusico[j].idMusico);
-
-                else
-                   continue;
-                }
-                return 0;
-                }
-
-*/
-
-/*int ordenar_numeros(Musico *pMusico, int TAM)
-
-{
-int temp;
-int i,j;
-
-for (i=1;i<TAM;i++)
-{
-	for (j=0;j<TAM-1;j++)
-	{
-		if (pMusico[j].edad > pMusico[j+1].edad)
-		{
-			temp = pMusico[j].edad;
-			pMusico[j].edad=pMusico[j+1].edad;
-			pMusico[j+1].edad=temp;
-		}
-	}
-
-}
-printf("\nLos valores ORDENADOS de lista son: \n");
-for(i=0;i<TAM;i++)
-{
-     if(pMusico[i].isEmpty==1)
-        continue;
-     else{
-        printf("\nEdad ordenada : %d\n",pMusico[j].edad);
-         }
-
-}
-return 0;
-}
-
-*/
-
-/** \brief Ordena de mayor a menor Numeros.
+/** \brief Ordena de mayor a menor Cadenas.
  *
  * \param Musico pMusico Puntero a la estructura Musico.
  * \param TAM Tamaño del array.
  * \return void.
  *
  */
-
-
 
 
 void ordenar_cadenas(Musico *pMusico, int TAM)
@@ -586,7 +227,6 @@ printf("\n La cantidad de Instrumentos de tipo 1 es: %d\n La cantidad de Instrum
                                                                                                                                                                                                       contadorInstrumento2,
                                                                                                                                                                                                       contadorInstrumento3,
                                                                                                                                                                                                       contadorInstrumento4);
-
 
  }
 
@@ -865,7 +505,6 @@ int array[4] = {bufferInstrumento1,bufferInstrumento2,bufferInstrumento3,bufferI
 
 
 
-//FUNCION HARDCODEADA PARA LA ORQUESTA 1, PUEDE SER OTRA.
 
 
 /** \brief Esta funcion calcula la cantidad de musicos y a la vez la Orquesta que mas Musicos tenga.
@@ -1072,12 +711,7 @@ for(j = 0; j<3; j++)
         break;
     }
 }
-/** \brief Crea musicos hardcodeados.
- *
- * \param Musico pMusico Puntero a la estructura Musico.
- * \return
- *
- */
+
 
 /** \brief Promedia y suma la edad de todos los Musicos.
  *
@@ -1117,7 +751,12 @@ for(j = 0; j<3; j++)
 
 
 
-
+/** \brief Crea musicos hardcodeados.
+ *
+ * \param Musico pMusico Puntero a la estructura Musico.
+ * \return
+ *
+ */
 
 void crearMusicos(Musico *pMusico)
 {
@@ -1125,7 +764,7 @@ void crearMusicos(Musico *pMusico)
             pMusico[0].idMusico=1;
             pMusico[0].edad=30;
             pMusico[0].suOrquesta=1;
-            pMusico[0].suInstrumento=2;
+            pMusico[0].suInstrumento=1;
             strcpy(pMusico[0].nombre,"Mus1");
             strcpy(pMusico[0].apellido,"Amus1");
 
@@ -1134,7 +773,7 @@ void crearMusicos(Musico *pMusico)
             pMusico[1].idMusico=2;
             pMusico[1].edad=20;
             pMusico[1].suOrquesta=1;
-            pMusico[1].suInstrumento=4;
+            pMusico[1].suInstrumento=1;
             strcpy(pMusico[1].nombre,"Mus2");
             strcpy(pMusico[1].apellido,"Amus2");
 
@@ -1142,7 +781,7 @@ void crearMusicos(Musico *pMusico)
             pMusico[2].idMusico=3;
             pMusico[2].edad=25;
             pMusico[2].suOrquesta=1;
-            pMusico[2].suInstrumento=2;
+            pMusico[2].suInstrumento=1;
             strcpy(pMusico[2].nombre,"Mus3");
             strcpy(pMusico[2].apellido,"Amus3");
 
@@ -1159,17 +798,58 @@ void crearMusicos(Musico *pMusico)
             pMusico[4].idMusico=5;
             pMusico[4].edad=22;
             pMusico[4].suOrquesta=1;
-            pMusico[4].suInstrumento=3;
+            pMusico[4].suInstrumento=1;
             strcpy(pMusico[4].nombre,"Mus5");
             strcpy(pMusico[4].apellido,"Amus5");
 
             pMusico[5].isEmpty=0;
-            pMusico[5].idMusico=5;
+            pMusico[5].idMusico=6;
             pMusico[5].edad=35;
-            pMusico[5].suOrquesta=3;
-            pMusico[5].suInstrumento=4;
+            pMusico[5].suOrquesta=1;
+            pMusico[5].suInstrumento=2;
             strcpy(pMusico[5].nombre,"Mus6");
             strcpy(pMusico[5].apellido,"Amus6");
+
+
+
+            pMusico[6].isEmpty=0;
+            pMusico[6].idMusico=7;
+            pMusico[6].edad=30;
+            pMusico[6].suOrquesta=1;
+            pMusico[6].suInstrumento=2;
+            strcpy(pMusico[6].nombre,"Mus1");
+            strcpy(pMusico[6].apellido,"Amus1");
+
+
+            pMusico[7].isEmpty=0;
+            pMusico[7].idMusico=8;
+            pMusico[7].edad=30;
+            pMusico[7].suOrquesta=1;
+            pMusico[7].suInstrumento=2;
+            strcpy(pMusico[7].nombre,"Mus1");
+            strcpy(pMusico[7].apellido,"Amus1");
+
+
+            pMusico[8].isEmpty=0;
+            pMusico[8].idMusico=9;
+            pMusico[8].edad=30;
+            pMusico[8].suOrquesta=1;
+            pMusico[8].suInstrumento=4;
+            strcpy(pMusico[8].nombre,"Mus1");
+            strcpy(pMusico[8].apellido,"Amus1");
+
+
+
+            pMusico[9].isEmpty=0;
+            pMusico[9].idMusico=10;
+            pMusico[9].edad=30;
+            pMusico[9].suOrquesta=1;
+            pMusico[9].suInstrumento=4;
+            strcpy(pMusico[9].nombre,"Mus1");
+            strcpy(pMusico[9].apellido,"Amus1");
+
+
+
 
 }
 
@@ -1182,29 +862,40 @@ void crearMusicos(Musico *pMusico)
 void crearOrquesta(Orquesta *pOrquesta)
 {
             pOrquesta[0].isEmpty=0;
+
             pOrquesta[0].idOrquesta=1;
             pOrquesta[0].tipoOrquesta=1;
             strcpy(pOrquesta[0].nombre,"nombre1");
             strcpy(pOrquesta[0].lugar,"lugar1");
 
              pOrquesta[1].isEmpty=0;
+
             pOrquesta[1].idOrquesta=2;
             pOrquesta[1].tipoOrquesta=2;
             strcpy(pOrquesta[1].nombre,"nombre2");
             strcpy(pOrquesta[1].lugar,"lugar1");
 
             pOrquesta[2].isEmpty=0;
+
             pOrquesta[2].idOrquesta=3;
             pOrquesta[2].tipoOrquesta=3;
             strcpy(pOrquesta[2].nombre,"nombre3");
             strcpy(pOrquesta[2].lugar,"lugar2");
 
             pOrquesta[3].isEmpty=0;
+
             pOrquesta[3].idOrquesta=4;
             pOrquesta[3].tipoOrquesta=3;
             strcpy(pOrquesta[3].nombre,"nombre4");
             strcpy(pOrquesta[3].lugar,"lugar3");
 }
+
+/** \brief Crea instrumentos hardcodeados.
+ *
+ * \param Instrumento pInstrumento Puntero a la estructura Instrumento.
+ * \return
+ *
+ */
 
 void crearInstrumentos(Instrumento *pInstrumento)
 {
@@ -1216,23 +907,67 @@ void crearInstrumentos(Instrumento *pInstrumento)
 
             pInstrumento[1].isEmpty=0;
             pInstrumento[1].idInstrumento=2;
-            pInstrumento[1].instrumento=2;
+            pInstrumento[1].instrumento=1;
             strcpy(pInstrumento[1].nombreInstrumento,"inst2");
 
             pInstrumento[2].isEmpty=0;
             pInstrumento[2].idInstrumento=3;
-            pInstrumento[2].instrumento=2;
+            pInstrumento[2].instrumento=1;
             strcpy(pInstrumento[2].nombreInstrumento,"inst3");
 
             pInstrumento[3].isEmpty=0;
             pInstrumento[3].idInstrumento=4;
-            pInstrumento[3].instrumento=3;
+            pInstrumento[3].instrumento=1;
             strcpy(pInstrumento[3].nombreInstrumento,"inst4");
 
             pInstrumento[4].isEmpty=0;
             pInstrumento[4].idInstrumento=5;
-            pInstrumento[4].instrumento=4;
+            pInstrumento[4].instrumento=1;
             strcpy(pInstrumento[4].nombreInstrumento,"inst5");
+
+             pInstrumento[5].isEmpty=0;
+            pInstrumento[5].idInstrumento=6;
+            pInstrumento[5].instrumento=2;
+            strcpy(pInstrumento[5].nombreInstrumento,"inst6");
+
+             pInstrumento[6].isEmpty=0;
+            pInstrumento[6].idInstrumento=7;
+            pInstrumento[6].instrumento=2;
+            strcpy(pInstrumento[6].nombreInstrumento,"inst7");
+
+
+
+             pInstrumento[7].isEmpty=0;
+            pInstrumento[7].idInstrumento=8;
+            pInstrumento[7].instrumento=2;
+            strcpy(pInstrumento[7].nombreInstrumento,"inst8");
+
+
+
+             pInstrumento[8].isEmpty=0;
+            pInstrumento[8].idInstrumento=9;
+            pInstrumento[8].instrumento=4;
+            strcpy(pInstrumento[8].nombreInstrumento,"inst9");
+
+
+
+             pInstrumento[9].isEmpty=0;
+            pInstrumento[9].idInstrumento=10;
+            pInstrumento[9].instrumento=4;
+            strcpy(pInstrumento[9].nombreInstrumento,"inst10");
+
+
+
+             //pInstrumento[10].isEmpty=0;
+            //pInstrumento[10].idInstrumento=11;
+            //pInstrumento[10].instrumento=4;
+           // strcpy(pInstrumento[10].nombreInstrumento,"inst11");
+
+
+
+
+
+
 
 
 }
@@ -1322,13 +1057,13 @@ int informe_sortApellidoMusico(Musico *pMusico,int len,int ordenamiento)  // EL 
 
             }
         }
-        for(int j = 0; j<len; j++)
+        for(int j = 0;j<len; j++)
         {
             if(pMusico[j].isEmpty==1)
             continue;
-        if(pMusico[i].suInstrumento==1)
+        if(pMusico[j].suInstrumento==1)
         printf("\n ID: %d\n suInstrumento: %d\n nombre: %s\n apellido: %s\n ",
-                       pMusico[i].idMusico,pMusico[i].suInstrumento,pMusico[i].nombre,pMusico[i].apellido);
+                       pMusico[j].idMusico,pMusico[j].suInstrumento,pMusico[j].nombre,pMusico[j].apellido);
         //printf("\n%s\n",pMusico[j].apellido);
     }
     }
@@ -1523,39 +1258,9 @@ for(j = 0; j<3; j++)
     }
 }
 
-/*void listarOrquestaMusicosNueva(Orquesta *pORquesta,Musico *pMusico,int sizeO,int sizeM)
-
-{
-    int retorno=-1;
-    int i,j;
-
-    if(pOrquesta!=NULL && sizeO>=0)
-    {
-       for(j=0;j<sizeM;j++)
-       {
-       if(pMusico[j].suOrquesta==pOrquesta[i].idOrquesta)
-       cant
-       }
 
 
-
-        for(i=0;i<sizeO;i++)
-        {
-            if(pOrquesta[i].isEmpty==1)
-                continue;
-            else
-
-                printf("\n ID: %d\n tipoOrquesta: %d\n nombre: %s\n lugar: %s",
-                       pOrquesta[i].idOrquesta,pOrquesta[i].tipoOrquesta,pOrquesta[i].nombre,pOrquesta[i].lugar);
-        }
-        retorno=0;
-    }
-    return retorno;
-}
-
-*/
-
-int musico_listarNuevo(Musico *pMusico, int CANT_MUSICO)
+int musico_listarNuevo(Musico *pMusico,Instrumento *pInstrumento, int CANT_MUSICO)
 {
     int retorno=-1;
     int i;
@@ -1568,8 +1273,8 @@ int musico_listarNuevo(Musico *pMusico, int CANT_MUSICO)
             else
             if(pMusico[i].edad>30)
             {
-                printf("\n ID: %d\n suInstrumento: %d\n nombre: %s\n apellido: %s\n Su orquesta: %d",
-                       pMusico[i].idMusico,pMusico[i].suInstrumento,pMusico[i].nombre,pMusico[i].apellido,pMusico[i].suOrquesta);
+                printf("\n El ID del Musico es: %d\n Su tipo de instrumento es: %d\n El nombre de su instrumento es: %s \n El nombre del Musico es: %s\n El apellido del Musico es: %s\n Su orquesta es: %d \n",
+                       pMusico[i].idMusico,pMusico[i].suInstrumento,pInstrumento[i].nombreInstrumento,pMusico[i].nombre,pMusico[i].apellido,pMusico[i].suOrquesta);
                        }
         }
         retorno=0;
@@ -1616,15 +1321,16 @@ int orquesta_listarLugar(Orquesta *pOrquesta, int CANT_ORQUESTA)
 
 
 
-int musico_listarPorIdOrquesta(Musico *pMusico,Orquesta *pOrquesta, int CANT_MUSICO)
+int musico_listarPorIdOrquesta(Musico *pMusico,Orquesta *pOrquesta,Instrumento *pInstrumento, int CANT_MUSICO)
 {
     int retorno=-1;
     int i;
-    int idBuscar;
-
+    char idBuscar[5];
+    int idNumerico;
     printf("\nIngrese el ID de la orquesta\n");
-    scanf("%d",&idBuscar);
-
+    fgets(idBuscar,10,stdin);
+    idBuscar[strlen(idBuscar)-1]='\0';
+    idNumerico= atoi(idBuscar);
 
     if(pMusico!=NULL && CANT_MUSICO>=0)
     {
@@ -1633,9 +1339,9 @@ int musico_listarPorIdOrquesta(Musico *pMusico,Orquesta *pOrquesta, int CANT_MUS
         {
             if(pMusico[i].isEmpty==1)
                 continue;
-            if(idBuscar==pMusico[i].suOrquesta)
+            if(idNumerico==pMusico[i].suOrquesta)
             {
-                printf("\n ID: %d\n suInstrumento: %d\n nombre: %s\n apellido: %s\n Edad: %d ",pMusico[i].idMusico,pMusico[i].suInstrumento,pMusico[i].nombre,pMusico[i].apellido,pMusico[i].edad);
+                printf("\n ID: %d\n Su instrumento: %s\n Su tipo de Instrumento: %d \n nombre: %s\n apellido: %s\n Edad: %d ",pMusico[i].idMusico,pInstrumento[i].nombreInstrumento,pMusico[i].suInstrumento,pMusico[i].nombre,pMusico[i].apellido,pMusico[i].edad);
             }
             else
                 continue;
@@ -1698,41 +1404,154 @@ int orquesta_listarCompleto(Orquesta *pOrquesta,Instrumento *pInstrumento, int C
 }
 */
 
-int orquesta_listarPorCantidad(Orquesta *pOrquesta, Musico *pMusico,int CANT_ORQUESTA,int CANT_MUSICO)
+
+/** \brief Ordena numeros de Mayor a menor (En este caso los Musicos).
+ *
+ * \param  Musico pMusico Puntero a la estructura Musico.
+ * \param  TAM Tamaño del array Musico.
+ * \return
+ *
+ */
+
+
+
+
+void ordenar_numerosMayorAmenorMusico(Musico *pMusico, int TAM)
 {
-    int retorno=-1;
+
+int temp;
     int i,j;
 
-    int contadorMusico=0;
-
-    for(j=0;j<CANT_MUSICO;j++) //agregar corchete abajo
-    {
-        for(i=0;i<CANT_ORQUESTA;i++)
-        {
-
-      if(pOrquesta[i].isEmpty==1)
-                       continue;
-      if(pMusico[j].suOrquesta==pOrquesta[i].idOrquesta)
-      contadorMusico++;
-
-      else
-        continue;
-     }
-     }
-    if(pOrquesta!=NULL && CANT_ORQUESTA>=0)
-    {
-        for(i=0;i<CANT_ORQUESTA;i++)
-        {
-            if(pOrquesta[i].isEmpty==1)
-                         continue;
-            if(contadorMusico>=5)
-                printf("\n ID: %d\n tipoOrquesta: %d\n nombre: %s\n lugar: %s\n cantidad de musicos : %d\n",
-                       pOrquesta[i].idOrquesta,pOrquesta[i].tipoOrquesta,pOrquesta[i].nombre,pOrquesta[i].lugar,contadorMusico);
-
-                       else
-                         continue;
+    for(i = 0; i < TAM-1; i++){
+        for(j = i+1; j < TAM; j++){
+            if(pMusico[i].suOrquesta < pMusico[j].suOrquesta)
+            {
+                temp = pMusico[i].suOrquesta;
+                pMusico[i].suOrquesta = pMusico[j].suOrquesta;
+                pMusico[j].suOrquesta = temp;
+            }
         }
-        retorno=0;
+    }
+
+
+}
+
+
+/** \brief Lista la orquesta que cumpla con los requisitos determinados de instrumentos.
+ *
+ * \param Orquesta pOrquesta Puntero a la estructura Orquesta
+ * \param sizeO Tamaño del array Orquesta
+ * \param Musico pMusico Puntero a la estructura Musico
+ * \param sizeM Tamaño del array Musico
+ * \param Instrumento pInstrumento Puntero a la estructura Instrumento
+ * \param sizeI Tamaño del array instrumento
+ * \return
+ *
+ */
+
+
+int informe_listarOrquestaCompleta(Orquesta* pOrquesta,int sizeO,
+                                    Musico* pMusico,int sizeM,
+                                    Instrumento* pInstrumento,int sizeI)
+
+
+{
+
+int i,j;
+
+int cantCuerdas;
+int cantViento;
+int cantPercusion;
+int retorno=-1;
+if (pOrquesta!=NULL && pMusico!=NULL && sizeM>0 && sizeO>0 && sizeI>0 && pInstrumento!=NULL)
+    {
+        printf("\n");
+        for (i=0;i<sizeO;i++)
+        {
+            if(pOrquesta[i].isEmpty==0)
+            {
+                cantCuerdas=0;
+                cantViento=0;
+                cantPercusion=0;
+                for(j=0;j<sizeM;j++)
+                {
+                    if ( pOrquesta[i].idOrquesta==pMusico[j].suOrquesta)
+                    {
+                        switch(pMusico[j].suInstrumento)
+                        {
+                            case 1:
+                                cantCuerdas++;
+                                continue;
+                            case 2:
+                                cantViento++;
+                                continue;
+                            case 3:
+                                cantViento++;
+                                continue;
+                            case 4:
+                                cantPercusion++;
+                                continue;
+                        }
+                    }
+
+                }
+                if (cantCuerdas>=5 && cantViento>=3 && cantPercusion>=2)
+                {
+                    printf("\n ID de la orquesta completa: %d\n El nombre de la Orquesta es : %s \n El lugar es : %s \n El tipo de Orquesta es : %d \n",pOrquesta[i].idOrquesta,
+                                                                                                                                                        pOrquesta[i].nombre,
+                                                                                                                                                        pOrquesta[i].lugar,
+                                                                                                                                                        pOrquesta[i].tipoOrquesta);
+
+                }
+            }
+        }
+        retorno =0;
     }
     return retorno;
+}
+
+
+/** \brief Lista la orquesta con la mayor cantidad de musicos.
+ *
+ * \param Orquesta pOrquesta Puntero a la estructura Orquesta
+ * \param sizeO Tamaño del array Orquesta
+ * \param Musico pMusico Puntero a la estructura Musico
+ * \param sizeM Tamaño del array Musico
+ * \return
+ *
+ */
+
+
+int informe_listarOrquestaPorCantidadMusicos(Orquesta* pOrquesta,int sizeO,Musico* pMusico,int sizeM)
+{
+    int i;
+    int j;
+    int auxiliarCantMusicos=0;
+    for(j=0;j<sizeO;j++)
+    {
+        if(pMusico != NULL && sizeM > 0)
+        {
+            for(i=0;i<sizeM;i++)
+            {
+                if(pMusico[i].suOrquesta == pOrquesta[j].idOrquesta && pMusico[i].isEmpty==0)
+                {
+
+                    auxiliarCantMusicos++;
+                }
+            }
+        }
+         pOrquesta[j].cantMusicos = auxiliarCantMusicos;
+         if(pOrquesta[j].cantMusicos > 5)
+    {
+        printf("\n ID Orquesta con mas Musicos: %d\n Cantidad de Musicos : %d\n Nombre: %s\n Lugar: %s\n Tipo de Orquesta : %d \n"
+                ,pOrquesta[j].idOrquesta,pOrquesta[j].cantMusicos,pOrquesta[j].nombre,
+                pOrquesta[j].lugar,pOrquesta[j].tipoOrquesta);
+
+        printf("--------\n");
+        break;
+    }
+    }
+
+
+    return 0;
 }

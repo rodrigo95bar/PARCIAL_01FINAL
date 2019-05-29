@@ -28,9 +28,9 @@ int musico_buscarString(Musico *pMusico, int size, char* valorBuscado, int* indi
 int musico_baja(Musico *pMusico, int sizeArray);
 int musico_bajaPorOrquesta(Musico *pMusico, int sizeArray, int idOrquesta);
 int musico_bajaValorRepetidoInt(Musico *pMusico, int sizeArray, int valorBuscado);
-int musico_modificar(Musico *pMusico,Orquesta *pOrquesta, int sizeArray);
+int musico_modificar(Musico *pMusico,Orquesta *pOrquesta,Instrumento *pInstrumento, int sizeArray);
 int musico_ordenarPorString(Musico *pMusico,int size);
-int musico_listar(Musico *pMusico, int size);
+int musico_listar(Musico *pMusico,Instrumento *pInstrumento, int size);
 
 #endif // MUSICO_H_INCLUDED
 

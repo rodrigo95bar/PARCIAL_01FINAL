@@ -16,7 +16,7 @@ int main()
     int opcion;
     int opcionSecundaria;
     int contadorId=0;
-
+    int flag=0;
     Orquesta pOrquesta[CANT_ORQUESTA];
     Musico pMusico[CANT_MUSICO];
     Instrumento pInstrumento [CANT_INSTRUMENTO];
@@ -37,6 +37,7 @@ int main()
         {
             case 1:
                 orquesta_alta(pOrquesta,CANT_ORQUESTA,&contadorId);
+                flag=1;
 
                 break;
 
@@ -50,12 +51,15 @@ int main()
                 break;
 
             case 4:
+             if(flag==2)
+             {
                 musico_alta(pMusico, pOrquesta, pInstrumento,CANT_MUSICO,&contadorId);
-
+             }
                 break;
 
+
             case 5:
-                  musico_modificar(pMusico,pOrquesta,CANT_MUSICO);
+                  musico_modificar(pMusico,pOrquesta,pInstrumento,CANT_MUSICO);
                 break;
 
             case 6:
@@ -63,11 +67,15 @@ int main()
                 break;
 
              case 7:
-                musico_listar(pMusico,CANT_MUSICO);
+                musico_listar(pMusico,pInstrumento,CANT_MUSICO);
                     break;
 
              case 8:
+                 if(flag==1)
+                 {
+                    flag=2;
                  instrumento_alta(pInstrumento,CANT_INSTRUMENTO,&contadorId);
+                 }
                     break;
 
              case 9:
@@ -75,45 +83,46 @@ int main()
                     break;
 
              case 10:
-                    utn_getUnsignedInt("\n 1)Listar A \n 2)Listar B \n 3)Listar C \n 4)Listar D \n 5)Listar E \n 6)Listar F \n 7)Listar G \n 8)Listar H",                   //cambiar
+                    utn_getUnsignedInt("\n 1)Listar A: Orquesta con mas de 5 Musicos \n 2)Listar B: Musicos con edad mayor a 30 \n 3)Listar C: Orquesta buscada por lugar. \n 4)Listar D: Orquesta completa \n 5)Listar E: Buscar Orquesta por ID \n 6)Listar F: Orquesta con mas Musicos \n 7)Listar G: Musicos que toquen instrumentos de Cuerdas \n 8)Listar H: Promedio Musicos por Orquesta\n",                   //cambiar
                       "\nError",1,sizeof(int),1,9,1,&opcionSecundaria);
                     switch(opcionSecundaria)
                     {
-                    case 1: orquesta_listarPorCantidad(pOrquesta,pMusico,CANT_ORQUESTA,CANT_MUSICO);
+                    case 1: informe_listarOrquestaPorCantidadMusicos(pOrquesta,CANT_ORQUESTA, pMusico,CANT_MUSICO);
+                     break;
 
-                    break;
 
                     case 2:
-                     musico_listarNuevo(pMusico,CANT_MUSICO);
+                     musico_listarNuevo(pMusico,pInstrumento,CANT_MUSICO);
+                     break;
 
-                    break;
                     case 3:
                     orquesta_listarLugar(pOrquesta,CANT_ORQUESTA);
+                     break;
 
-                    break;
+                    case 4: informe_listarOrquestaCompleta(pOrquesta,CANT_ORQUESTA,
+                                     pMusico,CANT_MUSICO,
+                                    pInstrumento,CANT_INSTRUMENTO);
 
-                    case 4:
-
-                    break;
+                     break;
 
                     case 5:
-                     musico_listarPorIdOrquesta(pMusico,pOrquesta,CANT_MUSICO);
-                    break;
+                     musico_listarPorIdOrquesta(pMusico,pOrquesta,pInstrumento,CANT_MUSICO);
+                     break;
 
 
                     case 6:
                      OrquestaConMayorMusicoYcantidadMusico(pMusico,CANT_MUSICO);
-                    break;
+                     break;
 
                     case 7:
                      informe_sortApellidoMusico(pMusico,CANT_MUSICO,1);
+                     break;
 
-                    break;
 
                     case 8:
                      promedioTotalMusicoOrquesta(pMusico,pOrquesta,CANT_MUSICO,CANT_ORQUESTA);
+                     break;
 
-                    break;
 
                     case 9:
 
@@ -123,18 +132,7 @@ int main()
                           printf("\nNumero Invalido\n");
                      break;
 
-
-
-
-
-
-
-
-
-
-
                     }
-                    break;
 
              case 11:
              break;
@@ -147,7 +145,7 @@ int main()
 
 
 
-    while(opcion!=10);
+    while(opcion!=11);
   return 0;
 }
 

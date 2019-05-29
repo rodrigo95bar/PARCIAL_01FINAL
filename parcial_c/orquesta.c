@@ -339,3 +339,19 @@ static int generateID(void)
 }
 
 
+int orquesta_printTipo(int tipoOrquesta)
+{
+    switch (tipoOrquesta)
+    {
+        case 1:
+            printf("Tipo: Sinfonica\n");
+            break;
+        case 2:
+            printf("Tipo: Filarmonica\n");
+            break;
+        case 3:
+            printf("Tipo: Camara\n");
+            break;
+    }
+    return 0;
+}

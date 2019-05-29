@@ -11,7 +11,7 @@ typedef struct
     char lugar[TEXT_SIZE];
     int tipoOrquesta;
     int tipoInstrumento;
-
+    int cantMusicos;
 
 }Orquesta;
 
@@ -31,7 +31,7 @@ int orquesta_bajaValorRepetidoInt(Orquesta *pOrquesta, int sizeArray, int valorB
 int orquesta_modificar(Orquesta *pOrquesta, int sizeArray);
 int orquesta_ordenarPorString(Orquesta *pOrquesta,int size);
 int orquesta_listar(Orquesta *pOrquesta, int size);
-
+int orquesta_printTipo(int tipoOrquesta);
 
 
 #endif // ORQUESTA_H_INCLUDED
